@@ -7,7 +7,7 @@ def petcalc(Ta, RH, Ws, year, month, day, hour,location,bodym,bodyh,age,clo,sex,
         Fside,Fup,Fcyl = 0.22,0.06,0.28 #Ståendes vid Liggande:    Fside,Fup,Fcyl = 0.166666, 0.166666, 0.2
         Tmrt = so.Solweig1D_2020a_calc(Fside, Fup, Fcyl,location,Ta, RH, year, month, day, hour,minu=30)
         return float(Tmrt)
-    def calcPet1(Ta, RH, Ws, Tmrt,bodym=75.,bodyh=1.8,age=35,clo=0.9,sex=1,workperkilo=80):
+    def calcPet1(Ta, RH, Ws, Tmrt,bodym=75.,bodyh=1.8,age=35,clo=0.9,sex=1,workperkilo=0):
         WsPET = (1.1 / 10) ** 0.2 * Ws #corretion from 10 meters height to 1.1 meters height 
         mbody, ht, clo, age, sex,vilowork = bodym, bodyh, clo, age,  sex,80#[kg], [m], [1], [years], [W], [m 1/f 2]
         resultPET = p._PET(Ta, RH, Tmrt, WsPET, mbody, age, ht, max(workperkilo*mbody+vilowork,80), clo, sex) #get Pet
