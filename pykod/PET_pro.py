@@ -7,26 +7,26 @@ def petcalc(Ta, RH, Ws, year, month, day, hour,location,bodym,bodyh,age,clo,sex,
         Fside,Fup,Fcyl = 0.22,0.06,0.28 #Ståendes vid Liggande:    Fside,Fup,Fcyl = 0.166666, 0.166666, 0.2
         Tmrt = so.Solweig1D_2020a_calc(Fside, Fup, Fcyl,location,Ta, RH, year, month, day, hour,minu=30)
         return float(Tmrt)
-    def calcPet1(Ta, RH, Ws, Tmrt,bodym=75.,bodyh=1.8,age=35,clo=0.9,sex=1,workperkilo=0):
+    def calcPet1(Ta, RH, Ws, Tmrt,bodym=75.,bodyh=1.8,age=35,clo=0.9,sex=1,workperkilo=80):
         WsPET = (1.1 / 10) ** 0.2 * Ws #corretion from 10 meters height to 1.1 meters height 
-        mbody, ht, clo, age, sex,vilowork = bodym, bodyh, clo, age,  sex,0#[kg], [m], [1], [years], [W], [m 1/f 2]
+        mbody, ht, clo, age, sex,vilowork = bodym, bodyh, clo, age,  sex,80#[kg], [m], [1], [years], [W], [m 1/f 2]
         resultPET = p._PET(Ta, RH, Tmrt, WsPET, mbody, age, ht, max(workperkilo*mbody+vilowork,80), clo, sex) #get Pet
         return float(resultPET)
-    def pace(pacein):
-        if pacein>=15:
-            return 0
-        if pacein<2.7:
-             return 23*3.5
-        paces=[15,11.84,9.81,9.10,8.29,7.31,6.60,6.06,5.57,5.33,4.97,4.66,4.34,4.14,3.93,3.73,3.39,3.11,2.87,2.66]
-        metrates=[3,3.3,4.5,6.5,7.8,8.5,9,9.3,10.5,11,11.8,12,12.5,13,14.8,14.8,16.8,18.5,19.8,23]
-        index=0
-        while pacein>paces[index]:
-            index+=1
-        pacefactorn=(metrates[index-1]*(pacein-paces[index-1])+metrates[index]*(paces[index]-pacein))/(paces[index]-paces[index-1])
-        return pacefactorn*3.5
+#    def pace(pacein):
+#        if pacein>=15:
+#            return 0
+#        if pacein<2.7:
+#             return 23*3.5
+#        paces=[15,11.84,9.81,9.10,8.29,7.31,6.60,6.06,5.57,5.33,4.97,4.66,4.34,4.14,3.93,3.73,3.39,3.11,2.87,2.66]
+#        metrates=[3,3.3,4.5,6.5,7.8,8.5,9,9.3,10.5,11,11.8,12,12.5,13,14.8,14.8,16.8,18.5,19.8,23]
+#        index=0
+#        while pacein>paces[index]:
+#            index+=1
+#        pacefactorn=(metrates[index-1]*(pacein-paces[index-1])+metrates[index]*(paces[index]-pacein))/(paces[index]-paces[index-1])
+#        return pacefactorn*3.5
     Tmrt = calcTmrt(Ta, RH, year, month, day, hour,location)
-    work=pace(pace_per_minute)
-    resultPET = calcPet(Ta, RH, Ws, Tmrt,bodym,bodyh,age,clo,sex,workperkilo=work)
+#    work=pace(pace_per_minute)
+    resultPET = calcPet(Ta, RH, Ws, Tmrt,bodym,bodyh,age,clo,sex,workperkilo=0)
     return Tmrt, resultPET
 def index(form):
         Ta = float(form.get("Ta",20))        
@@ -47,8 +47,6 @@ def index(form):
             sex=1
         else:
             sex=2
-        
- 
         
         if Ta > 70 or Ta < -100:
             print("petresult.html", "Unreasonable air temperature filled in",Ta)
