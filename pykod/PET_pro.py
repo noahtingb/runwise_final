@@ -3,16 +3,17 @@
 import pykod.PET_Tmrt as so
 import pykod.PET_calc as p
 def petcalc(Ta, RH, Ws, year, month, day, hour,location,bodym,bodyh,age,clo,sex,pace_per_minute=16):     
-    def calcTmrt(Ta, RH, year, month, day, hour,location):
+    def calcTmrt1(Ta, RH, year, month, day, hour,location):
         Fside,Fup,Fcyl = 0.22,0.06,0.28 #Ståendes vid Liggande:    Fside,Fup,Fcyl = 0.166666, 0.166666, 0.2
         Tmrt = so.Solweig1D_2020a_calc(Fside, Fup, Fcyl,location,Ta, RH, year, month, day, hour,minu=30)
         return float(Tmrt)
     def calcPet1(Ta, RH, Ws, Tmrt,bodym=75.,bodyh=1.8,age=35,clo=0.9,sex=1,workperkilo=0):
         WsPET = (1.1 / 10) ** 0.2 * Ws #corretion from 10 meters height to 1.1 meters height 
-        mbody, ht, clo, age, sex,vilowork = bodym, bodyh, clo, age,  sex,80#[kg], [m], [1], [years], [W], [m 1/f 2]
+        mbody, ht, clo, age, sex,vilowork = bodym, bodyh, clo, age,  sex,0#[kg], [m], [1], [years], [W], [m 1/f 2]
         resultPET = p._PET(Ta, RH, Tmrt, WsPET, mbody, age, ht, max(workperkilo*mbody+vilowork,80), clo, sex) #get Pet
         return float(resultPET)
-#    def pace(pacein):
+    def pace(pacein):
+        return 0
 #        if pacein>=15:
 #            return 0
 #        if pacein<2.7:
@@ -24,9 +25,9 @@ def petcalc(Ta, RH, Ws, year, month, day, hour,location,bodym,bodyh,age,clo,sex,
 #            index+=1
 #        pacefactorn=(metrates[index-1]*(pacein-paces[index-1])+metrates[index]*(paces[index]-pacein))/(paces[index]-paces[index-1])
 #        return pacefactorn*3.5
-    Tmrt = calcTmrt(Ta, RH, year, month, day, hour,location)
-#    work=pace(pace_per_minute)
-    resultPET = calcPet(Ta, RH, Ws, Tmrt,bodym,bodyh,age,clo,sex,workperkilo=0)
+    Tmrt = calcTmrt1(Ta, RH, year, month, day, hour,location)
+    work=pace(pace_per_minute)
+    resultPET = calcPet1(Ta, RH, Ws, Tmrt,bodym,bodyh,age,clo,sex=sex,workperkilo=work)
     return Tmrt, resultPET
 def index(form):
         Ta = float(form.get("Ta",20))        
