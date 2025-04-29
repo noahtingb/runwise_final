@@ -13,9 +13,9 @@ def petcalc(Ta, RH, Ws, year, month, day, hour,location,bodym,bodyh,age,clo,sex,
         resultPET = p._PET(Ta, RH, Tmrt, WsPET, mbody, age, ht, max(workperkilo*mbody+vilowork,80), clo, sex) #get Pet
         return float(resultPET)
     def pace(pacein):
-        if pacein<=15:
+        if pacein>=15:
             return 0
-        if pacein <2.66:
+        if pacein<2.7:
              return 23*3.5
         paces=[15,11.84,9.81,9.10,8.29,7.31,6.60,6.06,5.57,5.33,4.97,4.66,4.34,4.14,3.93,3.73,3.39,3.11,2.87,2.66]
         metrates=[3,3.3,4.5,6.5,7.8,8.5,9,9.3,10.5,11,11.8,12,12.5,13,14.8,14.8,16.8,18.5,19.8,23]
